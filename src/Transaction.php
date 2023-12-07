@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Transaction
  *
@@ -30,7 +31,7 @@ class Transaction
     {
         $username = Digiflazz::$username;
         $apiKey = Digiflazz::$apiKey;
-        $url = Digiflazz::$apiBase.'/transaction';
+        $url = Digiflazz::$apiBase . '/transaction';
 
         $requiredParams = ['buyer_sku_code', 'customer_no', 'ref_id'];
 
@@ -38,7 +39,7 @@ class Transaction
 
         $mainParams = [
             'username' => $username,
-            'sign' => md5($username.$apiKey.$params['ref_id']),
+            'sign' => md5($username . $apiKey . $params['ref_id']),
         ];
 
         $params = array_merge($params, $mainParams);
@@ -56,11 +57,13 @@ class Transaction
             $rbody = json_decode($response->getBody()->getContents(), true);
             $rcode = $response->getStatusCode();
             $rheader = $response->getHeaders();
-    
+
             self::handleAPIError(
-                array('body' => $rbody,
-                      'code' => $rcode,
-                      'header' => $rheader)
+                array(
+                    'body' => $rbody,
+                    'code' => $rcode,
+                    'header' => $rheader
+                )
             );
         }
     }
@@ -76,7 +79,7 @@ class Transaction
     {
         $username = Digiflazz::$username;
         $apiKey = Digiflazz::$apiKey;
-        $url = Digiflazz::$apiBase.'/transaction';
+        $url = Digiflazz::$apiBase . '/transaction';
 
         $requiredParams = ['buyer_sku_code', 'customer_no', 'ref_id'];
 
@@ -85,7 +88,7 @@ class Transaction
         $mainParams = [
             'commands' => 'inq-pasca',
             'username' => $username,
-            'sign' => md5($username.$apiKey.$params['ref_id']),
+            'sign' => md5($username . $apiKey . $params['ref_id']),
         ];
 
         $params = array_merge($params, $mainParams);
@@ -103,11 +106,13 @@ class Transaction
             $rbody = json_decode($response->getBody()->getContents(), true);
             $rcode = $response->getStatusCode();
             $rheader = $response->getHeaders();
-    
+
             self::handleAPIError(
-                array('body' => $rbody,
-                      'code' => $rcode,
-                      'header' => $rheader)
+                array(
+                    'body' => $rbody,
+                    'code' => $rcode,
+                    'header' => $rheader
+                )
             );
         }
     }
@@ -123,7 +128,7 @@ class Transaction
     {
         $username = Digiflazz::$username;
         $apiKey = Digiflazz::$apiKey;
-        $url = Digiflazz::$apiBase.'/transaction';
+        $url = Digiflazz::$apiBase . '/transaction';
 
         $requiredParams = ['buyer_sku_code', 'customer_no', 'ref_id'];
 
@@ -132,7 +137,7 @@ class Transaction
         $mainParams = [
             'commands' => 'pay-pasca',
             'username' => $username,
-            'sign' => md5($username.$apiKey.$params['ref_id']),
+            'sign' => md5($username . $apiKey . $params['ref_id']),
         ];
 
         $params = array_merge($params, $mainParams);
@@ -150,11 +155,56 @@ class Transaction
             $rbody = json_decode($response->getBody()->getContents(), true);
             $rcode = $response->getStatusCode();
             $rheader = $response->getHeaders();
-    
+
             self::handleAPIError(
-                array('body' => $rbody,
-                      'code' => $rcode,
-                      'header' => $rheader)
+                array(
+                    'body' => $rbody,
+                    'code' => $rcode,
+                    'header' => $rheader
+                )
+            );
+        }
+    }
+
+    //Check Pascabayar Transaction Status
+    public static function checkStatusPostpaid($params = [])
+    {
+        $username = Digiflazz::$username;
+        $apiKey = Digiflazz::$apiKey;
+        $url = Digiflazz::$apiBase . '/transaction';
+
+        $requiredParams = ['buyer_sku_code', 'customer_no', 'ref_id'];
+
+        self::validateParams($params, $requiredParams);
+
+        $mainParams = [
+            'commands' => 'status-pasca',
+            'username' => $username,
+            'sign' => md5($username . $apiKey . $params['ref_id']),
+        ];
+
+        $params = array_merge($params, $mainParams);
+
+        try {
+            $client = new Client();
+            $response = $client->request('POST', $url, [
+                'json' => $params,
+            ])->getBody()->getContents();
+            $response = json_decode($response);
+            $response = $response->data;
+            return $response;
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $rbody = json_decode($response->getBody()->getContents(), true);
+            $rcode = $response->getStatusCode();
+            $rheader = $response->getHeaders();
+
+            self::handleAPIError(
+                array(
+                    'body' => $rbody,
+                    'code' => $rcode,
+                    'header' => $rheader
+                )
             );
         }
     }
@@ -170,7 +220,7 @@ class Transaction
     {
         $username = Digiflazz::$username;
         $apiKey = Digiflazz::$apiKey;
-        $url = Digiflazz::$apiBase.'/transaction';
+        $url = Digiflazz::$apiBase . '/transaction';
 
         $requiredParams = ['customer_no'];
 
@@ -195,11 +245,13 @@ class Transaction
             $rbody = json_decode($response->getBody()->getContents(), true);
             $rcode = $response->getStatusCode();
             $rheader = $response->getHeaders();
-    
+
             self::handleAPIError(
-                array('body' => $rbody,
-                      'code' => $rcode,
-                      'header' => $rheader)
+                array(
+                    'body' => $rbody,
+                    'code' => $rcode,
+                    'header' => $rheader
+                )
             );
         }
     }
