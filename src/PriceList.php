@@ -74,7 +74,7 @@ class PriceList
         $url = Digiflazz::$apiBase.'/price-list';
 
         $params = [
-            'cmd' => 'pasca',
+            'cmd' => 'postpaid',
             'username' => $username,
             'sign' => md5($username.$apiKey.'pricelist'),
         ];
